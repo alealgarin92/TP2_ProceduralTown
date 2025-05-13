@@ -123,17 +123,40 @@ namespace SVS
             }
             return true;
         }
-        
+
 
         private GameObject SpawnPrefab(GameObject prefab, Vector3Int position, Quaternion rotation)
         {
             var newStructure = Instantiate(prefab, position, rotation, transform);
-            newStructure.AddComponent<FallTween>();
+
+            // 🔍 Verificamos si ya tiene Collider
+            if (newStructure.GetComponent<Collider>() == null)
+            {
+                // Buscamos un MeshFilter para saber si tiene malla 3D
+                var meshFilter = newStructure.GetComponentInChildren<MeshFilter>();
+                if (meshFilter != null)
+                {
+                    // Le agregamos BoxCollider al objeto raíz
+                    var box = newStructure.AddComponent<BoxCollider>();
+
+                    // OPCIONAL: ajustar el centro y tamaño al mesh, si está mal posicionado
+                    // box.center = meshFilter.sharedMesh.bounds.center;
+                    // box.size = meshFilter.sharedMesh.bounds.size;
+
+                    Debug.Log("✔ BoxCollider agregado a: " + newStructure.name);
+                }
+                else
+                {
+                    Debug.LogWarning("⚠ Sin MeshFilter en hijos de: " + newStructure.name);
+                }
+            }
+            else
+            {
+                Debug.Log("🟡 Ya tenía collider: " + newStructure.name);
+            }
+
             return newStructure;
         }
-            
-
-
         private Dictionary<Vector3Int, Direction> FindFreeSpacesAroundRoad(List<Vector3Int> roadPositions)
         {
             Dictionary<Vector3Int, Direction> freeSpaces = new Dictionary<Vector3Int, Direction>();

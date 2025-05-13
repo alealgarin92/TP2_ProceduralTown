@@ -44,6 +44,21 @@ namespace SVS
                 }
                 var road = Instantiate(roadStrainght, position, rotation, transform);
                 road.AddComponent<FallTween>();
+                // 🚧 Agregar collider si no lo tiene
+                if (road.GetComponent<Collider>() == null) // AGREGA BOXCOLLIDER
+                {
+                    var mesh = road.GetComponentInChildren<MeshFilter>();
+                    if (mesh != null)
+                    {
+                        road.AddComponent<BoxCollider>();
+                        Debug.Log("✔ Collider agregado a calle: " + road.name);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("⚠ Calle sin MeshFilter: " + road.name);
+                    }
+                }
+
                 roadDictionary.Add(position, road);
 
                 if(i==0 || i == lenght -1)
@@ -79,6 +94,7 @@ namespace SVS
                     }
 
                     roadDictionary[position] = Instantiate(roadEnd, position , rotation, transform);
+                    //EnsureCollider(roadDictionary[position]);
 
                 }
                 else if (neighbourDirections.Count == 2)
@@ -109,6 +125,7 @@ namespace SVS
                         }
 
                         roadDictionary[position] = Instantiate(roadCorner, position , rotation, transform);
+                        //EnsureCollider(roadDictionary[position]);
                 }
                 else if(neighbourDirections.Count == 3)
                 {
@@ -136,15 +153,41 @@ namespace SVS
                         }
 
                         roadDictionary[position] = Instantiate(road3Way, position , rotation, transform);
+                        //EnsureCollider(roadDictionary[position]);
 
                 }
                 else
                 {
                     Destroy(roadDictionary[position]);
                     roadDictionary[position] = Instantiate(road4Way, position, rotation,transform);
+                    //EnsureCollider(roadDictionary[position]);
                 }
             }
         }
+        /*private void EnsureCollider(GameObject go) // AGREGA MESH COLLIDERS A LAS CALLES
+        {
+            var meshFilter = go.GetComponentInChildren<MeshFilter>();
+            if (meshFilter != null && meshFilter.sharedMesh != null)
+            {
+                GameObject meshObject = meshFilter.gameObject;
+
+                if (meshObject.GetComponent<Collider>() == null)
+                {
+                    var meshCollider = meshObject.AddComponent<MeshCollider>();
+                    meshCollider.sharedMesh = meshFilter.sharedMesh;
+                    meshCollider.convex = false; // No es necesario que sea convex si es suelo
+                    Debug.Log("✔ MeshCollider agregado a: " + meshObject.name);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("⚠ No se encontró MeshFilter en hijos de: " + go.name);
+            }
+        }
+        */
+
+
+
 
         public void Reset()
         {
