@@ -17,6 +17,9 @@ namespace SVS
         [SerializeField][Range(0f,90f)]private float angle = 90f;
 
         private bool waitingForTheRoad = false;
+        [SerializeField] private GameObject playerPrefab;
+        private GameObject playerInstance;
+        [SerializeField] private Vector3 playerSpawnOffset = new Vector3(0, 1f, 0);
 
         public int Lenght
         {
@@ -123,6 +126,52 @@ namespace SVS
             roadHelper.FixRoad();
             yield return new WaitForSeconds(0.8f);
             StartCoroutine(structureHelper.PlaceStructuresAroundRoad(roadHelper.GetRoadPositions()));
+
+            SpawnPlayer(); //ubica el jugador
+            PlaceExitPointFarFromPlayer(playerInstance.transform.position);
+            // ubica la salida
+
+
+        }
+        private void SpawnPlayer() //ubicar el personaje en el mapa
+        {
+            List<Vector3Int> roadPositions = roadHelper.GetRoadPositions();
+            if (roadPositions.Count == 0)
+            {
+                Debug.LogWarning("No hay calles para ubicar al jugador.");
+                return;
+            }
+
+            Vector3Int spawnPoint = roadPositions[0]; // Usamos la primer calle generada
+            Vector3 worldPosition = spawnPoint + new Vector3(0, 0.01f, 0); // Un poco elevado
+
+            playerInstance = Instantiate(playerPrefab, worldPosition, Quaternion.identity);
+        }
+
+        [SerializeField] private GameObject exitPrefab;
+
+        private void PlaceExitPointFarFromPlayer(Vector3 playerPosition)
+        {
+            List<Vector3Int> roadPositions = roadHelper.GetRoadPositions();
+            Vector3Int farthestPoint = roadPositions[0];
+            float maxDistance = 0f;
+
+            foreach (var pos in roadPositions)
+            {
+                float distance = Vector3.Distance(pos, playerPosition);
+                if (distance > maxDistance)
+                {
+                    maxDistance = distance;
+                    farthestPoint = pos;
+                }
+            }
+
+            // Rotación de la calle, usando la dirección calculada para la calle
+            Vector3 direction = (farthestPoint - playerPosition).normalized;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+
+            Vector3 spawnPosition = farthestPoint + new Vector3(0, 0f, 0); // 0f = sin altura extra
+            Instantiate(exitPrefab, spawnPosition, rotation);
         }
     }
 }
