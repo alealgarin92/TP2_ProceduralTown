@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace SVS
 {
@@ -43,6 +41,7 @@ namespace SVS
                     continue;
                 }
                 var road = Instantiate(roadStrainght, position, rotation, transform);
+                road.AddComponent<AutoMeshCollider>().runOnStart = true;
                 road.AddComponent<FallTween>();
                 roadDictionary.Add(position, road);
 
@@ -79,6 +78,7 @@ namespace SVS
                     }
 
                     roadDictionary[position] = Instantiate(roadEnd, position , rotation, transform);
+                    roadDictionary[position].AddComponent<AutoMeshCollider>().runOnStart = true;
 
                 }
                 else if (neighbourDirections.Count == 2)
@@ -108,7 +108,9 @@ namespace SVS
                             rotation = UnityEngine.Quaternion.Euler(0,-90,0);
                         }
 
-                        roadDictionary[position] = Instantiate(roadCorner, position , rotation, transform);
+                    roadDictionary[position] = Instantiate(roadCorner, position, rotation, transform);
+                    roadDictionary[position].AddComponent<AutoMeshCollider>().runOnStart = true;
+
                 }
                 else if(neighbourDirections.Count == 3)
                 {
@@ -135,14 +137,34 @@ namespace SVS
                                 }
                         }
 
-                        roadDictionary[position] = Instantiate(road3Way, position , rotation, transform);
+                    roadDictionary[position] = Instantiate(road3Way, position, rotation, transform);
+                    roadDictionary[position].AddComponent<AutoMeshCollider>().runOnStart = true;
 
                 }
                 else
                 {
                     Destroy(roadDictionary[position]);
-                    roadDictionary[position] = Instantiate(road4Way, position, rotation,transform);
+                    var road = Instantiate(roadStrainght, position, rotation, transform);
+
+                    // Si no tiene collider, le agregamos uno
+                    if (road.GetComponent<Collider>() == null)
+                    {
+                        var mesh = road.GetComponentInChildren<MeshFilter>();
+                        if (mesh != null)
+                        {
+                            road.AddComponent<MeshCollider>();
+                            Debug.Log("✔ Collider agregado a calle: " + road.name);
+                        }
+                        else
+                        {
+                            Debug.LogWarning("⚠ Calle sin MeshFilter: " + road.name);
+                        }
+                    }
+                    roadDictionary[position] = Instantiate(road4Way, position, rotation, transform);
+                    roadDictionary[position].AddComponent<AutoMeshCollider>().runOnStart = true;
+
                 }
+
             }
         }
 

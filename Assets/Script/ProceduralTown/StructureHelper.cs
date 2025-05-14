@@ -61,7 +61,7 @@ namespace SVS
                             }
                            var building = SpawnPrefab(buildingTypes[i].GetPrefab(), freeSpot.Key, rotation);
                            structuresDictionary.Add(freeSpot.Key, building);
-                           break;
+                        break;
                     }
                     if(buildingTypes[i].IsBuildingAvailable())
                     {
@@ -92,6 +92,7 @@ namespace SVS
                 }
                 
                 yield return new WaitForSeconds(animationTime);
+
             }
             
         }
@@ -123,15 +124,46 @@ namespace SVS
             }
             return true;
         }
-        
+        private void EnsureCollider(GameObject go)
+        {
+            if (go.GetComponent<Collider>() == null)
+            {
+                var meshRenderer = go.GetComponentInChildren<MeshRenderer>();
+                if (meshRenderer != null)
+                {
+                    var box = go.AddComponent<BoxCollider>();
 
-        private GameObject SpawnPrefab(GameObject prefab, Vector3Int position, Quaternion rotation)
+                    // Obtenemos el mesh real y su transform
+                    Bounds bounds = meshRenderer.bounds;
+                    Transform meshTransform = meshRenderer.transform;
+
+                    // Convertimos el centro del mesh a espacio local del objeto padre
+                    box.center = go.transform.InverseTransformPoint(bounds.center);
+                    box.size = go.transform.InverseTransformVector(bounds.size);
+
+                    Debug.Log("✔ BoxCollider bien ajustado a: " + go.name);
+                }
+                else
+                {
+                    Debug.LogWarning("⚠ Sin MeshRenderer en hijos de: " + go.name);
+                }
+            }
+        }
+
+
+        /*private GameObject SpawnPrefab(GameObject prefab, Vector3Int position, Quaternion rotation)
         {
             var newStructure = Instantiate(prefab, position, rotation, transform);
             newStructure.AddComponent<FallTween>();
             return newStructure;
+        }*/
+        private GameObject SpawnPrefab(GameObject prefab, Vector3Int position, Quaternion rotation)
+        {
+            var newStructure = Instantiate(prefab, position, rotation, transform);
+            newStructure.AddComponent<AutoMeshCollider>().runOnStart = true;
+            return newStructure;
+
         }
-            
 
 
         private Dictionary<Vector3Int, Direction> FindFreeSpacesAroundRoad(List<Vector3Int> roadPositions)

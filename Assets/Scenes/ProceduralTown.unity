@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 300608594}
   - component: {fileID: 300608593}
+  - component: {fileID: 300608595}
   m_Layer: 0
   m_Name: StructureHelper
   m_TagString: Untagged
@@ -155,13 +156,13 @@ MonoBehaviour:
     quantity: 1
     quantityAlreadyPlaced: 0
   - prefabs:
-    - {fileID: 5418577439970722738, guid: ec611ae9f609edc4cad3995c701a4072, type: 3}
+    - {fileID: 1239770411209590530, guid: 1473a4794d06d4e148d717b3bb117243, type: 3}
     sizeRequired: 3
     quantity: 1
     quantityAlreadyPlaced: 0
   - prefabs:
-    - {fileID: 2507707691550815495, guid: 59ffc13d9fb598240ac517fe6fb6fd9c, type: 3}
-    - {fileID: 3866452111178995711, guid: 62dd89dfe4948b744ac32fe5d0249467, type: 3}
+    - {fileID: 1239770411209590530, guid: 1473a4794d06d4e148d717b3bb117243, type: 3}
+    - {fileID: 1239770411209590530, guid: 1473a4794d06d4e148d717b3bb117243, type: 3}
     sizeRequired: 1
     quantity: 5
     quantityAlreadyPlaced: 0
@@ -195,6 +196,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &300608595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300608592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e602d284a860a421c97722d188a09add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runOnStart: 1
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,13 +296,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.41596097, y: -0.0012708917, z: 0.0005823683, w: 0.90938145}
-  m_LocalPosition: {x: -0.07790092, y: 1, z: -0.8742119}
+  m_LocalRotation: {x: 0.06104845, y: -0.0013937445, z: 0.000085245025, w: 0.9981339}
+  m_LocalPosition: {x: -0.07790092, y: 0.4, z: -0.408}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 35, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 7, y: -0.16, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -690,7 +704,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Re Generate
+  m_text: Generar Ciudad
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -717,13 +731,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.05
-  m_fontSizeBase: 17.05
+  m_fontSize: 15.2
+  m_fontSizeBase: 15.2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 0
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -802,7 +816,7 @@ MonoBehaviour:
   roadHelper: {fileID: 1788274552}
   structureHelper: {fileID: 300608593}
   angle: 90
-  playerPrefab: {fileID: 4045800544939969521, guid: edb8ec6804aa72c43a788c74357a398b, type: 3}
+  playerinstance: {fileID: 4045800544939969521, guid: edb8ec6804aa72c43a788c74357a398b, type: 3}
   playerSpawnOffset: {x: 0, y: 1, z: 0}
   exitPrefab: {fileID: 7087791673409184681, guid: c9c3854f8de0513438ecc5ba71921978, type: 3}
 --- !u!4 &1054536008
@@ -1224,6 +1238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1788274553}
   - component: {fileID: 1788274552}
+  - component: {fileID: 1788274554}
   m_Layer: 0
   m_Name: RoadHelper
   m_TagString: Untagged
@@ -1243,11 +1258,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc317ee86cb471540b566f367d0bedc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadStrainght: {fileID: 1902133473773644130, guid: 4cc96138ef8c728428d8abdcc0b6f9b1, type: 3}
-  roadCorner: {fileID: 9167836805613001921, guid: 50e7e7a62a765c34ca6c22f34f0c28e1, type: 3}
-  road3Way: {fileID: 5962866701861012061, guid: 315ae3df12eb2cd48be4923c16f3547a, type: 3}
-  road4Way: {fileID: 9024991216101018872, guid: 42168f3369da5d741b4848f69149e780, type: 3}
-  roadEnd: {fileID: 1901475907271895716, guid: d293aa27ae6eca54c97ea18b5e7892a0, type: 3}
+  roadStrainght: {fileID: 5830638293556249488, guid: 157ae53635eb64076af382d0981020a0, type: 3}
+  roadCorner: {fileID: 7554288779486860422, guid: ca3ee881bfa664a75b81cef56f3e6146, type: 3}
+  road3Way: {fileID: 5827298987444778769, guid: 46ba2ae7383c44c4bab3098620b0639e, type: 3}
+  road4Way: {fileID: 4559518641091518587, guid: f724daa31fc504aee920f6456aea058f, type: 3}
+  roadEnd: {fileID: 5932962684528702548, guid: b900b7d87849f466581f9e584cc2aa9e, type: 3}
   animationTime: 0.01
 --- !u!4 &1788274553
 Transform:
@@ -1264,6 +1279,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1788274554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788274551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e602d284a860a421c97722d188a09add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runOnStart: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

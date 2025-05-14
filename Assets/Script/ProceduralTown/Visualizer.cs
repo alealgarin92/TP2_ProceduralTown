@@ -17,7 +17,7 @@ namespace SVS
         [SerializeField][Range(0f,90f)]private float angle = 90f;
 
         private bool waitingForTheRoad = false;
-        [SerializeField] private GameObject playerPrefab;
+        [SerializeField] private GameObject playerinstance;
         private GameObject playerInstance;
         [SerializeField] private Vector3 playerSpawnOffset = new Vector3(0, 1f, 0);
 
@@ -51,7 +51,12 @@ namespace SVS
             
             roadHelper.Reset();
             structureHelper.Reset();
-         
+            if (playerInstance != null)
+            {
+                Destroy(playerInstance);
+                Debug.Log("?? Player anterior destruido.");
+            }
+
             var sequence = lSystem.GenerateSentence();
             StartCoroutine(VisualizeSequence(sequence)); 
         }
@@ -133,8 +138,10 @@ namespace SVS
 
 
         }
+
         private void SpawnPlayer() //ubicar el personaje en el mapa
         {
+
             List<Vector3Int> roadPositions = roadHelper.GetRoadPositions();
             if (roadPositions.Count == 0)
             {
@@ -145,7 +152,8 @@ namespace SVS
             Vector3Int spawnPoint = roadPositions[0]; // Usamos la primer calle generada
             Vector3 worldPosition = spawnPoint + new Vector3(0, 0.01f, 0); // Un poco elevado
 
-            playerInstance = Instantiate(playerPrefab, worldPosition, Quaternion.identity);
+            playerInstance = Instantiate(playerinstance, worldPosition, Quaternion.identity);
+
         }
 
         [SerializeField] private GameObject exitPrefab;
@@ -166,7 +174,7 @@ namespace SVS
                 }
             }
 
-            // Rotación de la calle, usando la dirección calculada para la calle
+            // Rotaci?n de la calle, usando la direcci?n calculada para la calle
             Vector3 direction = (farthestPoint - playerPosition).normalized;
             Quaternion rotation = Quaternion.LookRotation(direction);
 
